@@ -16,8 +16,8 @@
 <body>
 
     <!-- ==========================================================================
-       NAVIGATION BAR
-       ========================================================================== -->
+        NAVIGATION BAR
+        ========================================================================== -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="#home" class="nav-logo">YA<span>.</span></a>
@@ -31,6 +31,7 @@
                 <li><a href="#about" class="nav-item">About Me</a></li>
                 <li><a href="#leadership" class="nav-item">Leadership</a></li>
                 <li><a href="#skills" class="nav-item">Skills</a></li>
+                <li><a href="#creative" class="nav-item">Creative Work</a></li>
                 <li><a href="#certificates" class="nav-item">Certificates</a></li>
                 <li><a href="#contact" class="nav-item">Contact</a></li>
             </ul>
@@ -38,8 +39,8 @@
     </nav>
 
     <!-- ==========================================================================
-       HERO SECTION
-       ========================================================================== -->
+        HERO SECTION
+        ========================================================================== -->
     <header id="home" class="hero-section">
         <div class="hero-container">
             <div class="hero-content reveal">
@@ -63,8 +64,8 @@
     </header>
 
     <!-- ==========================================================================
-       ABOUT ME SECTION
-       ========================================================================== -->
+        ABOUT ME SECTION
+        ========================================================================== -->
     <section id="about" class="about-section section-padding">
         <div class="section-container">
             <h2 class="section-title reveal">About <span>Me</span></h2>
@@ -97,8 +98,8 @@
     </section>
 
     <!-- ==========================================================================
-       LEADERSHIP SECTION
-       ========================================================================== -->
+        LEADERSHIP SECTION
+        ========================================================================== -->
     <section id="leadership" class="leadership-section section-padding">
         <div class="section-container">
             <h2 class="section-title reveal">Leadership & <span>Experience</span></h2>
@@ -161,8 +162,8 @@
     </section>
 
     <!-- ==========================================================================
-       SKILLS SECTION
-       ========================================================================== -->
+        SKILLS SECTION
+        ========================================================================== -->
     <section id="skills" class="skills-section section-padding">
         <div class="section-container">
             <h2 class="section-title reveal">Skill <span>Matrix</span></h2>
@@ -243,8 +244,45 @@
     </section>
 
     <!-- ==========================================================================
-       CERTIFICATES SECTION
-       ========================================================================== -->
+        CREATIVE WORK & PHOTOGRAPHY GALLERY
+        ========================================================================== -->
+    <section id="creative" class="creative-section section-padding">
+        <div class="section-container">
+            <h2 class="section-title reveal">Creative <span>Portfolio</span></h2>
+            <p class="section-subtitle reveal">A showcase of interactive post-processing editing skills.</p>
+            
+            <!-- Before / After Interactive Editing Slider -->
+            <div class="reveal" style="margin-top: 10px;">
+                <h3 style="margin-bottom: 10px; color: var(--text-primary); font-size: 1.2rem;">Before & After Retouching</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Drag or touch the slider to view the transformation from raw capture to final edit.</p>
+                
+                <!-- Landscape-Locked Container (3:2 standard horizontal format) -->
+                <div class="slider-wrapper" style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 3/2; overflow: hidden; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin: 0 auto; border: 1px solid var(--border-color); background: #111; -webkit-user-select: none; user-select: none;">
+                    <span class="label before-label" style="position: absolute; bottom: 15px; left: 15px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 10px; font-size: 0.75rem; border-radius: 4px; z-index: 5; text-transform: uppercase; pointer-events: none;">Before</span>
+                    <span class="label after-label" style="position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 10px; font-size: 0.75rem; border-radius: 4px; z-index: 5; text-transform: uppercase; pointer-events: none;">After</span>
+
+                    <!-- Background: Edited Landscape Photo (Cover Fill) -->
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        <img src="after-photo.jpg" alt="Edited Photo" style="width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none;">
+                    </div>
+                    
+                    <!-- Foreground: Raw Landscape Photo (Cover Fill, locked width sync so sliding works perfectly across both layers) -->
+                    <div id="before-container" style="position: absolute; top: 0; left: 0; width: 50%; height: 100%; z-index: 2; border-right: 3px solid var(--accent-gold); overflow: hidden;">
+                        <div id="before-inner" style="position: absolute; top: 0; left: 0; height: 100%;">
+                            <img src="before-photo.jpg" alt="Raw Photo" style="height: 100%; width: 100%; object-fit: cover; display: block; pointer-events: none;">
+                        </div>
+                    </div>
+                    
+                    <!-- Interactive Slider Input -->
+                    <input type="range" min="0" max="100" value="50" id="slider-ctrl" style="position: absolute; -webkit-appearance: none; appearance: none; width: 100%; height: 100%; background: transparent; outline: none; margin: 0; top: 0; left: 0; z-index: 10; cursor: ew-resize; touch-action: pan-y;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+        CERTIFICATES SECTION
+        ========================================================================== -->
     <section id="certificates" class="certificates-section section-padding">
         <div class="section-container">
             <h2 class="section-title reveal">Credentials & <span>Certificates</span></h2>
@@ -336,13 +374,25 @@
                     </div>
                 </div>
 
+                <!-- Slot 8: Debate Volunteering Certificate (JPG) -->
+                <div class="certificate-card reveal">
+                    <div class="cert-img-container">
+                        <img src="certificate8.jpg" alt="Debate Volunteering Certificate" class="cert-thumb">
+                        <div class="cert-overlay"><i class="fa-solid fa-expand"></i></div>
+                    </div>
+                    <div class="cert-info">
+                        <h3>Debate Volunteering</h3>
+                        <p>Event Supervision & Organization Credential</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
     <!-- ==========================================================================
-       CONTACT SECTION
-       ========================================================================== -->
+        CONTACT SECTION
+        ========================================================================== -->
     <section id="contact" class="contact-section section-padding">
         <div class="section-container">
             <h2 class="section-title reveal">Let's Connect<span>.</span></h2>
@@ -378,8 +428,8 @@
     </section>
 
     <!-- ==========================================================================
-       LIGHTBOX VIEWER COMPONENT
-       ========================================================================== -->
+        LIGHTBOX VIEWER COMPONENT
+        ========================================================================== -->
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close">&times;</span>
         <img class="lightbox-content" id="lightbox-img" src="" alt="Enlarged Certificate View">
@@ -387,14 +437,55 @@
     </div>
 
     <!-- ==========================================================================
-       FOOTER SECTION
-       ========================================================================== -->
+        FOOTER SECTION
+        ========================================================================== -->
     <footer class="footer">
         <div class="footer-container">
             <p>&copy; <span id="year"></span> All Rights Reserved.</p>
             <p class="footer-credit">Designed & Engineered by <span>Youssef Ahmed</span></p>
         </div>
     </footer>
+
+    <!-- Slider Script Logic & Mobile Touch Handling -->
+    <script>
+        const sliderCtrl = document.getElementById('slider-ctrl');
+        const beforeContainer = document.getElementById('before-container');
+        const beforeInner = document.getElementById('before-inner');
+        const wrapper = document.querySelector('.slider-wrapper');
+
+        if (sliderCtrl && beforeContainer && beforeInner && wrapper) {
+            const syncWidth = () => {
+                beforeInner.style.width = wrapper.offsetWidth + 'px';
+            };
+            window.addEventListener('resize', syncWidth);
+            syncWidth();
+
+            const updateSlider = (val) => {
+                beforeContainer.style.width = val + '%';
+                sliderCtrl.value = val;
+            };
+
+            sliderCtrl.addEventListener('input', (e) => {
+                updateSlider(e.target.value);
+            });
+
+            let isDragging = false;
+
+            sliderCtrl.addEventListener('touchstart', () => { isDragging = true; }, {passive: true});
+            window.addEventListener('touchend', () => { isDragging = false; });
+
+            sliderCtrl.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const rect = sliderCtrl.getBoundingClientRect();
+                const touchX = e.touches[0].clientX;
+                let posX = touchX - rect.left;
+                let percentage = (posX / rect.width) * 100;
+                if (percentage < 0) percentage = 0;
+                if (percentage > 100) percentage = 100;
+                updateSlider(percentage);
+            }, {passive: true});
+        }
+    </script>
 
     <!-- Main JavaScript Logic Link -->
     <script src="script.js"></script>
