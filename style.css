@@ -847,3 +847,30 @@ body {
     .timeline { padding-left: 20px; }
     .timeline-dot { left: -31px; }
 }
+body.light-mode {
+    --bg-body: #f8fafc !important;          
+    --bg-card: #ffffff !important;          
+    --nav-bg: rgba(248, 250, 252, 0.85) !important; 
+    --text-primary: #0f172a !important;     
+    --text-secondary: #475569 !important;   
+    --border-color: #e2e8f0 !important;     
+    --accent-gold: #b45309 !important;      
+}
+
+/* Style for your navbar toggle icon button */
+.theme-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+    color: var(--accent-gold);
+}
