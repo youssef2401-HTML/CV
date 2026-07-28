@@ -261,15 +261,29 @@ document.addEventListener('DOMContentLoaded', () => {
        ========================================================================== */
     const localTimeBadge = document.getElementById('local-time-badge');
 
-    const updateLocalTime = () => {
-        if (!localTimeBadge) return;
-        const options = { timeZone: 'Africa/Cairo', hour: 'numeric', minute: '2-digit', hour12: true };
-        const timeString = new Intl.DateTimeFormat([], options).format(new Date());
-        localTimeBadge.textContent = timeString;
-    };
+    if (localTimeBadge) {
+        const updateLocalTime = () => {
+            try {
+                const options = { 
+                    timeZone: 'Africa/Cairo', 
+                    hour: 'numeric', 
+                    minute: '2-digit', 
+                    hour12: true 
+                };
+                
+                // Explicitly targeting 'en-US' forces GitHub servers to render formatting reliably
+                const timeString = new Intl.DateTimeFormat('en-US', options).format(new Date());
+                localTimeBadge.textContent = timeString;
+            } catch (error) {
+                console.error("Time logic failure tracking:", error);
+                // Safe production fallback engine setup
+                localTimeBadge.textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            }
+        };
 
-    updateLocalTime();
-    setInterval(updateLocalTime, 10000);
+        updateLocalTime();
+        setInterval(updateLocalTime, 10000);
+    }
 
 
     /* ==========================================================================
