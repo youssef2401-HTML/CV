@@ -1,263 +1,486 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
+
+    <!-- ==========================================================================
+        DOCUMENT META & CONFIGURATION
+        ========================================================================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Youssef Ahmed | Professional Portfolio & CV</title>
+
+    <!-- ==========================================================================
+        EXTERNAL FONTS & STYLESHEETS
+        ========================================================================== -->
     <!-- Google Fonts: Poppins for modern typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Font Awesome for clean, premium icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Main Stylesheet -->
+
+    <!-- Main Custom Application Stylesheet -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- ==========================================================================
+        INLINE EXTRA UI STYLING (NEW FEATURES & THEME SUPPORT)
+        ========================================================================== -->
+    <style>
+        /* Theme Variables Framework */
+        :root {
+            --bg-body: #0a0a0c;
+            --bg-card: #131318;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-gold: #f59e0b;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --nav-bg: rgba(10, 10, 12, 0.85);
+            --glow-shadow: rgba(245, 158, 11, 0.15);
+        }
+
+        [data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-gold: #d97706;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --nav-bg: rgba(248, 250, 252, 0.85);
+            --glow-shadow: rgba(217, 119, 6, 0.15);
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        /* Live Notification Toast Widget */
+        #live-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-gold);
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--glow-shadow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #live-toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        #live-toast i {
+            color: var(--accent-gold);
+            font-size: 1.2rem;
+        }
+
+        #live-toast span {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Theme Toggle Button UI */
+        .theme-toggle-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--accent-gold);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-gold);
+        }
+
+        /* Animated Progress Badge */
+        .skill-level-indicator {
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-level-fill {
+            height: 100%;
+            background: var(--accent-gold);
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.1, 0.9, 0.2, 1);
+        }
+    </style>
+
 </head>
 <body>
 
+
     <!-- ==========================================================================
-        NAVIGATION BAR
+        LIVE NOTIFICATION TOAST WIDGET (NEW UI FEATURE)
         ========================================================================== -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#home" class="nav-logo">YA<span>.</span></a>
-            <div class="menu-toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+    <div id="live-toast">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span id="toast-text">Welcome to Youssef's interactive portfolio hub!</span>
+    </div>
+
+
+    <!-- ==========================================================================
+        NAVIGATION BAR (Autopilot: Auto-hides on scroll down, shows on scroll up)
+        ========================================================================== -->
+    <nav class="navbar" id="navbar" style="background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;">
+        <div class="nav-container" style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 15px 30px;">
+
+            <a href="#home" class="nav-logo" style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); text-decoration: none;">YA<span style="color: var(--accent-gold);">.</span></a>
+
+            <div class="menu-toggle" id="mobile-menu" style="cursor: pointer; display: none;">
+                <span class="bar" style="display: block; width: 25px; height: 3px; background: var(--text-primary); margin: 5px 0;"></span>
+                <span class="bar" style="display: block; width: 25px; height: 3px; background: var(--text-primary); margin: 5px 0;"></span>
+                <span class="bar" style="display: block; width: 25px; height: 3px; background: var(--text-primary); margin: 5px 0;"></span>
             </div>
-            <ul class="nav-links">
-                <li><a href="#home" class="nav-item active">Home</a></li>
-                <li><a href="#about" class="nav-item">About Me</a></li>
-                <li><a href="#experience" class="nav-item">Experience</a></li>
-                <li><a href="#skills" class="nav-item">Skills</a></li>
-                <li><a href="#creative" class="nav-item">Creative Work</a></li>
-                <li><a href="#certificates" class="nav-item">Certificates</a></li>
-                <li><a href="#contact" class="nav-item">Contact</a></li>
+
+            <ul class="nav-links" style="display: flex; align-items: center; gap: 25px; list-style: none; margin: 0; padding: 0;">
+                
+                <li>
+                    <a href="#home" class="nav-item active" style="color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.3s;">Home</a>
+                </li>
+
+                <li>
+                    <a href="#about" class="nav-item" style="color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.3s;">About Me</a>
+                </li>
+
+                <li>
+                    <a href="#experience" class="nav-item" style="color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.3s;">Experience</a>
+                </li>
+
+                <li>
+                    <a href="#skills" class="nav-item" style="color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.3s;">Skills</a>
+                </li>
+
+                <li>
+                    <a href="#creative" class="nav-item" style="color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.3s;">Creative Work</a>
+                </li>
+
+                <li>
+                    <a href="#certificates" class="nav-item" style="color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.3s;">Certificates</a>
+                </li>
+
+                <li>
+                    <a href="#contact" class="nav-item" style="color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.3s;">Contact</a>
+                </li>
+
+                <!-- Theme Switcher Action Button (NEW FEATURE) -->
+                <li>
+                    <button id="theme-switcher" class="theme-toggle-btn" title="Toggle Light/Dark Mode">
+                        <i id="theme-icon" class="fa-solid fa-sun"></i>
+                    </button>
+                </li>
+
+                <!-- Fully Automated Live Status Indicator & Time Badge -->
+                <li class="nav-status" style="display: flex; align-items: center; background: var(--bg-card); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border-color);">
+    <span id="local-time-badge" style="font-size: 0.75rem; color: var(--text-secondary);"></span>
+</li>
+                </li>
+
             </ul>
+
         </div>
     </nav>
+
 
     <!-- ==========================================================================
         HERO SECTION
         ========================================================================== -->
-    <header id="home" class="hero-section">
-        <div class="hero-container">
-            <div class="hero-content reveal">
-                <span class="hero-badge">Professional Portfolio & CV</span>
-                <h1 class="hero-title">Youssef Ahmed</h1>
-                <p class="hero-subtitle">Programmer, Student & Photographer</p>
-                <p class="hero-description">
-                    I am a versatile student, programmer, and visual creator with a strong foundation in software development, technical project execution, and professional media. Passionate about writing clean code, solving complex problems, and capturing impactful digital content.
+    <header id="home" class="hero-section" style="padding: 160px 30px 100px 30px; min-height: 90vh; display: flex; align-items: center;">
+        <div class="hero-container" style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 50px; flex-wrap: wrap;">
+
+            <div class="hero-content reveal" style="flex: 1; min-width: 300px;">
+                
+                <span class="hero-badge" style="background: rgba(245, 158, 11, 0.1); color: var(--accent-gold); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 20px; border: 1px solid rgba(245, 158, 11, 0.2);">Professional Portfolio & CV Hub</span>
+                
+                <h1 class="hero-title" style="font-size: 3.5rem; font-weight: 700; color: var(--text-primary); line-height: 1.2; margin-bottom: 15px;">Youssef Ahmed</h1>
+                
+                <p class="hero-subtitle" style="font-size: 1.4rem; font-weight: 600; color: var(--accent-gold); margin-bottom: 20px;">Programmer, SVIS Student & Professional Photographer</p>
+                
+                <p class="hero-description" style="font-size: 1rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 30px;">
+                    I am a versatile student at Smart Vision International School (SVIS), software programmer, and visual creator with a robust foundation in code architecture, hardware logic design, and digital media production. Passionate about building efficient workflows and capturing impactful visual stories.
                 </p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary">Contact Me</a>
-                    <a href="#certificates" class="btn btn-secondary">View Certificates</a>
+                
+                <div class="hero-buttons" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <a href="#contact" class="btn btn-primary" style="background: var(--accent-gold); color: #000; padding: 12px 28px; border-radius: 8px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 15px var(--glow-shadow); transition: transform 0.3s;">Contact Me</a>
+                    <a href="#certificates" class="btn btn-secondary" style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); padding: 12px 28px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.3s;">View Credentials</a>
+                </div>
+
+            </div>
+
+            <div class="hero-image-container reveal" style="flex: 1; min-width: 300px; display: flex; justify-content: center;">
+                <div class="image-wrapper" style="position: relative; width: 320px; height: 320px; border-radius: 50%; padding: 8px; background: linear-gradient(135deg, var(--accent-gold), transparent); box-shadow: 0 20px 40px var(--glow-shadow);">
+                    <img src="PFP.jpg" alt="Youssef Ahmed - Profile Photo" class="hero-img" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;">
                 </div>
             </div>
-            <div class="hero-image-container reveal">
-                <div class="image-wrapper">
-                    <img src="PFP.jpg" alt="Youssef Ahmed - Profile Photo" class="hero-img">
-                </div>
-            </div>
+
         </div>
     </header>
+
 
     <!-- ==========================================================================
         ABOUT ME SECTION
         ========================================================================== -->
-    <section id="about" class="about-section section-padding">
-        <div class="section-container">
-            <h2 class="section-title reveal">About <span>Me</span></h2>
-            <div class="about-grid">
-                <div class="about-text reveal">
-                    <p>
-                        I approach my work with a blend of analytical logic and creative execution. Whether I am writing structured software, architecting codebases, or collaborating with teams to direct events, I focus on building sustainable, high-quality solutions. 
+    <section id="about" class="about-section section-padding" style="padding: 100px 30px; background: var(--bg-card);">
+        <div class="section-container" style="max-width: 1200px; margin: 0 auto;">
+
+            <h2 class="section-title reveal" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 50px; text-align: center;">About <span style="color: var(--accent-gold);">Me</span></h2>
+
+            <div class="about-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; align-items: center;">
+
+                <div class="about-text reveal" style="display: flex; flex-direction: column; gap: 20px;">
+                    
+                    <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem;">
+                        I'm Youssef Ahmed, a programmer, student at Smart Vision International School (SVIS), and an avid visual creator. My academic and personal focus spans both technical engineering and creative expression—whether I'm programming microcontroller systems, developing desktop code, or shooting and editing cinematic landscapes.
                     </p>
-                    <p>
-                        My expertise spans across software engineering stacks—including web technologies, Python, and C#—alongside hardware prototyping and technical design. Beyond engineering, I maintain a strong background in visual media, utilizing digital tools like Adobe Lightroom for professional-grade photography and post-production.
+                    
+                    <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem;">
+                        Proactive and deeply curious, I thrive in environments that reward collaboration, structured problem-solving, and continuous experimentation. From working with Python and C# to organizing events and managing student representation duties, I love turning ambitious concepts into polished real-world realities.
                     </p>
-                    <p>
-                        I thrive in dynamic, goal-oriented environments where strong communication and problem-solving are vital. Constantly eager to expand my skill set, I take pride in turning ambitious ideas into fully realized technical and professional assets.
+                    
+                    <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem;">
+                        Driven by a passion for continuous skill enhancement, I take pride in balancing robust technical discipline with creative execution in everything I undertake.
                     </p>
+
                 </div>
-                <div class="about-features reveal">
-                    <div class="feature-card">
-                        <i class="fa-solid fa-code feature-icon"></i>
-                        <h3>Software & Engineering</h3>
-                        <p>Writing clean, efficient code across multiple programming languages and development environments.</p>
+
+                <div class="about-features reveal" style="display: flex; flex-direction: column; gap: 20px;">
+                    
+                    <div class="feature-card" style="background: var(--bg-body); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                        <i class="fa-solid fa-code feature-icon" style="font-size: 2rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 10px; color: var(--text-primary);">Software & Hardware Engineering</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Writing efficient code structures and prototyping interactive electronic hardware modules.</p>
                     </div>
-                    <div class="feature-card">
-                        <i class="fa-solid fa-users-gear feature-icon"></i>
-                        <h3>Leadership & Execution</h3>
-                        <p>Directing collaborative teams, organizing large-scale initiatives, and driving administrative workflows.</p>
+
+                    <div class="feature-card" style="background: var(--bg-body); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                        <i class="fa-solid fa-users-gear feature-icon" style="font-size: 2rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 10px; color: var(--text-primary);">Leadership & Event Coordination</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Directing administrative student workflows, overseeing large group initiatives, and running collaborative events.</p>
                     </div>
+
                 </div>
+
             </div>
+
         </div>
     </section>
+
 
     <!-- ==========================================================================
         EXPERIENCE & LEADERSHIP SECTION
         ========================================================================== -->
-    <section id="experience" class="leadership-section section-padding">
-        <div class="section-container">
-            <h2 class="section-title reveal">Experience & <span>Leadership</span></h2>
-            <div class="timeline">
+    <section id="experience" class="leadership-section section-padding" style="padding: 100px 30px;">
+        <div class="section-container" style="max-width: 1200px; margin: 0 auto;">
+
+            <h2 class="section-title reveal" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 50px; text-align: center;">Experience & <span style="color: var(--accent-gold);">Leadership</span></h2>
+
+            <div class="timeline" style="position: relative; max-width: 800px; margin: 0 auto; padding-left: 30px; border-left: 2px solid var(--accent-gold);">
                 
                 <!-- MSA MUN Experience -->
-                <div class="timeline-item reveal">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <span class="timeline-date">Academic Appointment</span>
-                        <h3>Model United Nations (MUN) Delegate</h3>
-                        <p class="timeline-sub">MSA University (Modern Sciences and Arts University), Egypt</p>
-                        <p class="timeline-desc">
-                            Participated in high-level diplomatic simulations, researched international policy frameworks, and collaborated with peers to draft and defend complex resolutions. Cultivated advanced skills in public speaking, negotiation, and strategic analysis.
+                <div class="timeline-item reveal" style="position: relative; margin-bottom: 40px;">
+                    <div class="timeline-dot" style="position: absolute; left: -36px; top: 0; width: 14px; height: 14px; background: var(--accent-gold); border-radius: 50%; box-shadow: 0 0 10px var(--accent-gold);"></div>
+                    <div class="timeline-card" style="background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                        <span class="timeline-date" style="font-size: 0.8rem; font-weight: 600; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px;">Academic Appointment</span>
+                        <h3 style="font-size: 1.3rem; font-weight: 600; color: var(--text-primary); margin: 8px 0;">Model United Nations (MUN) Delegate</h3>
+                        <p class="timeline-sub" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 15px; font-weight: 500;">MSA University (Modern Sciences and Arts University), Egypt</p>
+                        <p class="timeline-desc" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                            Participated in high-level diplomatic simulations, researched intricate global policy frameworks, and collaborated with peers to draft and defend complex international resolutions. Cultivated advanced proficiencies in public speaking, active negotiation, and strategic analysis.
                         </p>
-                        <div class="timeline-tags">
-                            <span>Diplomacy</span>
-                            <span>Public Speaking</span>
-                            <span>Negotiation</span>
+                        <div class="timeline-tags" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <span style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-primary);">Diplomacy</span>
+                            <span style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-primary);">Public Speaking</span>
+                            <span style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-primary);">Negotiation</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="timeline-item reveal">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <span class="timeline-date">Current Appointment</span>
-                        <h3>Class Vice President</h3>
-                        <p class="timeline-sub">Student Body Government</p>
-                        <p class="timeline-desc">
-                            Served as an executive administrative representative, managing communications between students and administration. Coordinated localized project logistics, structured schedules, and pitched engagement initiatives.
+                <!-- Class Vice President Experience -->
+                <div class="timeline-item reveal" style="position: relative; margin-bottom: 40px;">
+                    <div class="timeline-dot" style="position: absolute; left: -36px; top: 0; width: 14px; height: 14px; background: var(--accent-gold); border-radius: 50%; box-shadow: 0 0 10px var(--accent-gold);"></div>
+                    <div class="timeline-card" style="background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                        <span class="timeline-date" style="font-size: 0.8rem; font-weight: 600; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px;">Current Appointment</span>
+                        <h3 style="font-size: 1.3rem; font-weight: 600; color: var(--text-primary); margin: 8px 0;">Class Vice President</h3>
+                        <p class="timeline-sub" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 15px; font-weight: 500;">Student Body Government</p>
+                        <p class="timeline-desc" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                            Served as an executive administrative representative, managing direct communications between the student body and school administration. Coordinated localized project logistics, structured operational schedules, and pitched student engagement initiatives.
                         </p>
-                        <div class="timeline-tags">
-                            <span>Administration</span>
-                            <span>Communication</span>
-                            <span>Project Management</span>
+                        <div class="timeline-tags" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <span style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-primary);">Administration</span>
+                            <span style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-primary);">Communication</span>
+                            <span style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-primary);">Project Management</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="timeline-item reveal">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <span class="timeline-date">Special Event Assignment</span>
-                        <h3>Event Supervisor & Coordinator</h3>
-                        <p class="timeline-sub">Cross-Organizational Initiative</p>
-                        <p class="timeline-desc">
-                            Appointed as a lead supervisor to structure and manage a multi-group institutional event. Supervised active participants, established operational timelines, and directed stage workflows to ensure efficient execution.
+                <!-- Event Supervisor Experience -->
+                <div class="timeline-item reveal" style="position: relative; margin-bottom: 0;">
+                    <div class="timeline-dot" style="position: absolute; left: -36px; top: 0; width: 14px; height: 14px; background: var(--accent-gold); border-radius: 50%; box-shadow: 0 0 10px var(--accent-gold);"></div>
+                    <div class="timeline-card" style="background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                        <span class="timeline-date" style="font-size: 0.8rem; font-weight: 600; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px;">Special Event Assignment</span>
+                        <h3 style="font-size: 1.3rem; font-weight: 600; color: var(--text-primary); margin: 8px 0;">Event Supervisor & Coordinator</h3>
+                        <p class="timeline-sub" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 15px; font-weight: 500;">Cross-Organizational Initiative</p>
+                        <p class="timeline-desc" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                            Appointed as a lead supervisor to structure and manage a multi-group institutional event. Supervised active participants, established operational timelines, and directed stage workflows to ensure smooth execution and crisis mitigation.
                         </p>
-                        <div class="timeline-tags">
-                            <span>Event Planning</span>
-                            <span>Crisis Mitigation</span>
-                            <span>Team Coordination</span>
+                        <div class="timeline-tags" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <span style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-primary);">Event Planning</span>
+                            <span style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-primary);">Crisis Mitigation</span>
+                            <span style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-primary);">Team Coordination</span>
                         </div>
                     </div>
                 </div>
 
             </div>
+
         </div>
     </section>
+
 
     <!-- ==========================================================================
         SKILLS SECTION
         ========================================================================== -->
-    <section id="skills" class="skills-section section-padding">
-        <div class="section-container">
-            <h2 class="section-title reveal">Skill <span>Matrix</span></h2>
-            <div class="skills-grid">
+    <section id="skills" class="skills-section section-padding" style="padding: 100px 30px; background: var(--bg-card);">
+        <div class="section-container" style="max-width: 1200px; margin: 0 auto;">
+
+            <h2 class="section-title reveal" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; text-align: center;">Skill <span style="color: var(--accent-gold);">Matrix</span></h2>
+            <p class="section-subtitle reveal" style="text-align: center; color: var(--text-secondary); margin-bottom: 40px; font-size: 1rem;">Filter core competencies across development, visual media, and interpersonal leadership.</p>
+            
+            <!-- Skill Filter Category Tabs -->
+            <div class="skill-filters reveal" style="display: flex; justify-content: center; gap: 10px; margin-bottom: 40px; flex-wrap: wrap;">
+                <button class="skill-tab-btn active" data-filter="all" style="background: var(--accent-gold); color: #000; border: none; padding: 10px 20px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">All Skills</button>
+                <button class="skill-tab-btn" data-filter="dev" style="background: var(--bg-body); color: var(--text-primary); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Development & Hardware</button>
+                <button class="skill-tab-btn" data-filter="design" style="background: var(--bg-body); color: var(--text-primary); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Design & Media</button>
+                <button class="skill-tab-btn" data-filter="soft" style="background: var(--bg-body); color: var(--text-primary); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Soft Skills</button>
+            </div>
+
+            <div class="skills-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
                 
-                <div class="skill-card reveal">
-                    <i class="fa-brands fa-html5 skill-icon"></i>
-                    <h3>HTML5</h3>
-                </div>
-                <div class="skill-card reveal">
-                    <i class="fa-brands fa-css3-alt skill-icon"></i>
-                    <h3>CSS3</h3>
-                </div>
-                <div class="skill-card reveal">
-                    <i class="fa-brands fa-js skill-icon"></i>
-                    <h3>JavaScript</h3>
-                </div>
-                <div class="skill-card reveal">
-                    <i class="fa-brands fa-python skill-icon"></i>
-                    <h3>Python</h3>
-                </div>
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-hashtag skill-icon"></i>
-                    <h3>C# Development</h3>
-                </div>
-                <div class="skill-card reveal">
-                    <i class="fa-brands fa-git-alt skill-icon"></i>
-                    <h3>Git Versioning</h3>
-                </div>
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-laptop-code skill-icon"></i>
-                    <h3>VS Code</h3>
-                </div>
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-camera skill-icon"></i>
-                    <h3>Photography</h3>
-                </div>
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-circle-half-stroke skill-icon"></i>
-                    <h3>Adobe Lightroom</h3>
+                <div class="skill-card reveal" data-category="dev" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-brands fa-html5 skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">HTML5</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="95%"></div></div>
                 </div>
 
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-comments skill-icon"></i>
-                    <h3>Communication</h3>
+                <div class="skill-card reveal" data-category="dev" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-brands fa-css3-alt skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">CSS3</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="90%"></div></div>
                 </div>
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-users skill-icon"></i>
-                    <h3>Teamwork</h3>
+
+                <div class="skill-card reveal" data-category="dev" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-brands fa-js skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">JavaScript</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="85%"></div></div>
                 </div>
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-brain skill-icon"></i>
-                    <h3>Critical Thinking</h3>
+
+                <div class="skill-card reveal" data-category="dev" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-brands fa-python skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">Python</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="85%"></div></div>
                 </div>
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-sliders skill-icon"></i>
-                    <h3>Problem Solving</h3>
+
+                <div class="skill-card reveal" data-category="dev" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-solid fa-hashtag skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">C# Development</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="80%"></div></div>
                 </div>
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-microphone-lines skill-icon"></i>
-                    <h3>Public Speaking</h3>
+
+                <div class="skill-card reveal" data-category="dev" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-solid fa-microchip skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">Hardware / Arduino</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="90%"></div></div>
                 </div>
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-calendar-check skill-icon"></i>
-                    <h3>Event Planning</h3>
+
+                <div class="skill-card reveal" data-category="dev" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-brands fa-git-alt skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">Git Versioning</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="80%"></div></div>
                 </div>
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-clock skill-icon"></i>
-                    <h3>Time Management</h3>
+
+                <div class="skill-card reveal" data-category="design" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-solid fa-camera skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">Photography</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="95%"></div></div>
                 </div>
-                <div class="skill-card reveal">
-                    <i class="fa-solid fa-wand-magic-sparkles skill-icon"></i>
-                    <h3>Creativity</h3>
+
+                <div class="skill-card reveal" data-category="design" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-solid fa-circle-half-stroke skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">Adobe Lightroom</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="90%"></div></div>
+                </div>
+
+                <div class="skill-card reveal" data-category="soft" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-solid fa-comments skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">Communication</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="95%"></div></div>
+                </div>
+
+                <div class="skill-card reveal" data-category="soft" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-solid fa-users skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">Teamwork</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="90%"></div></div>
+                </div>
+
+                <div class="skill-card reveal" data-category="soft" style="background: var(--bg-body); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; transition: transform 0.3s;">
+                    <i class="fa-solid fa-microphone-lines skill-icon" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">Public Speaking</h3>
+                    <div class="skill-level-indicator"><div class="skill-level-fill" data-width="90%"></div></div>
                 </div>
 
             </div>
+
         </div>
     </section>
+
 
     <!-- ==========================================================================
         CREATIVE WORK & PHOTOGRAPHY GALLERY
         ========================================================================== -->
-    <section id="creative" class="creative-section section-padding">
-        <div class="section-container">
-            <h2 class="section-title reveal">Creative <span>Portfolio</span></h2>
-            <p class="section-subtitle reveal">A showcase of technical design and digital post-processing capabilities.</p>
+    <section id="creative" class="creative-section section-padding" style="padding: 100px 30px;">
+        <div class="section-container" style="max-width: 1200px; margin: 0 auto;">
+
+            <h2 class="section-title reveal" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; text-align: center;">Creative <span style="color: var(--accent-gold);">Portfolio</span></h2>
+            <p class="section-subtitle reveal" style="text-align: center; color: var(--text-secondary); margin-bottom: 40px; font-size: 1rem;">A showcase of visual digital post-processing capabilities and photographic editing.</p>
             
             <!-- Before / After Interactive Editing Slider -->
-            <div class="reveal" style="margin-top: 10px;">
-                <h3 style="margin-bottom: 10px; color: var(--text-primary); font-size: 1.2rem;">Before & After Retouching</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Drag or touch the slider to view the transformation from raw capture to final professional edit.</p>
+            <div class="reveal" style="margin-top: 10px; text-align: center;">
+                
+                <h3 style="margin-bottom: 8px; color: var(--text-primary); font-size: 1.2rem;">Before & After Retouching Comparison</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 25px;">Drag or touch the interactive slider below to inspect the transformation from raw capture to professional grade edit.</p>
                 
                 <!-- Landscape-Locked Container (3:2 standard horizontal format) -->
-                <div class="slider-wrapper" style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 3/2; overflow: hidden; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin: 0 auto; border: 1px solid var(--border-color); background: #111; -webkit-user-select: none; user-select: none;">
+                <div class="slider-wrapper" style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 3/2; overflow: hidden; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); margin: 0 auto; border: 1px solid var(--border-color); background: #111; -webkit-user-select: none; user-select: none;">
+                    
                     <span class="label before-label" style="position: absolute; bottom: 15px; left: 15px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 10px; font-size: 0.75rem; border-radius: 4px; z-index: 5; text-transform: uppercase; pointer-events: none;">Before</span>
                     <span class="label after-label" style="position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 10px; font-size: 0.75rem; border-radius: 4px; z-index: 5; text-transform: uppercase; pointer-events: none;">After</span>
 
@@ -266,7 +489,7 @@
                         <img src="after-photo.jpg" alt="Edited Photo" style="width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none;">
                     </div>
                     
-                    <!-- Foreground: Raw Landscape Photo (Cover Fill, locked width sync so sliding works perfectly across both layers) -->
+                    <!-- Foreground: Raw Landscape Photo -->
                     <div id="before-container" style="position: absolute; top: 0; left: 0; width: 50%; height: 100%; z-index: 2; border-right: 3px solid var(--accent-gold); overflow: hidden;">
                         <div id="before-inner" style="position: absolute; top: 0; left: 0; height: 100%;">
                             <img src="before-photo.jpg" alt="Raw Photo" style="height: 100%; width: 100%; object-fit: cover; display: block; pointer-events: none;">
@@ -275,219 +498,277 @@
                     
                     <!-- Interactive Slider Input -->
                     <input type="range" min="0" max="100" value="50" id="slider-ctrl" style="position: absolute; -webkit-appearance: none; appearance: none; width: 100%; height: 100%; background: transparent; outline: none; margin: 0; top: 0; left: 0; z-index: 10; cursor: ew-resize; touch-action: pan-y;">
+
                 </div>
+
             </div>
+
         </div>
     </section>
+
 
     <!-- ==========================================================================
         CERTIFICATES SECTION
         ========================================================================== -->
-    <section id="certificates" class="certificates-section section-padding">
-        <div class="section-container">
-            <h2 class="section-title reveal">Credentials & <span>Certificates</span></h2>
-            <p class="section-subtitle reveal">Click on any certificate preview to inspect high-resolution credential documentation.</p>
+    <section id="certificates" class="certificates-section section-padding" style="padding: 100px 30px; background: var(--bg-card);">
+        <div class="section-container" style="max-width: 1200px; margin: 0 auto;">
+
+            <h2 class="section-title reveal" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; text-align: center;">Credentials & <span style="color: var(--accent-gold);">Certificates</span></h2>
+            <p class="section-subtitle reveal" style="text-align: center; color: var(--text-secondary); margin-bottom: 40px; font-size: 1rem;">Click on any credential thumbnail below to inspect high-resolution documentation.</p>
             
-            <div class="certificate-grid">
+            <div class="certificate-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px;">
                 
-                <!-- 1. MUN Certificate (JPEG) -->
-                <div class="certificate-card reveal">
-                    <div class="cert-img-container">
-                        <img src="certificate1.jpeg" alt="Model United Nations Certificate - MSA University" class="cert-thumb">
-                        <div class="cert-overlay"><i class="fa-solid fa-expand"></i></div>
+                <!-- 1. MUN Certificate -->
+                <div class="certificate-card reveal" style="background: var(--bg-body); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.3s;">
+                    <div class="cert-img-container" style="position: relative; overflow: hidden; height: 180px;">
+                        <img src="certificate1.jpeg" alt="Model United Nations Certificate - MSA University" class="cert-thumb" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+                        <div class="cert-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;"><i class="fa-solid fa-expand" style="color: #fff; font-size: 1.5rem;"></i></div>
                     </div>
-                    <div class="cert-info">
-                        <h3>Model United Nations</h3>
-                        <p>MSA University Delegate Credential</p>
-                    </div>
-                </div>
-
-                <!-- 2. Debate Volunteering Certificate (JPG) -->
-                <div class="certificate-card reveal">
-                    <div class="cert-img-container">
-                        <img src="certificate8.jpg" alt="Event Supervision Certificate" class="cert-thumb">
-                        <div class="cert-overlay"><i class="fa-solid fa-expand"></i></div>
-                    </div>
-                    <div class="cert-info">
-                        <h3>Event Supervision & Organization</h3>
-                        <p>Professional Leadership Credential</p>
+                    <div class="cert-info" style="padding: 20px;">
+                        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Model United Nations</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">MSA University Delegate Credential</p>
                     </div>
                 </div>
 
-                <!-- 3. iSchool Coding Certificate 1 (PNG) -->
-                <div class="certificate-card reveal">
-                    <div class="cert-img-container">
-                        <img src="certificate2.png" alt="iSchool Coding Certificate" class="cert-thumb">
-                        <div class="cert-overlay"><i class="fa-solid fa-expand"></i></div>
+                <!-- 2. Event Supervision Certificate -->
+                <div class="certificate-card reveal" style="background: var(--bg-body); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.3s;">
+                    <div class="cert-img-container" style="position: relative; overflow: hidden; height: 180px;">
+                        <img src="certificate8.jpg" alt="Event Supervision Certificate" class="cert-thumb" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+                        <div class="cert-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;"><i class="fa-solid fa-expand" style="color: #fff; font-size: 1.5rem;"></i></div>
                     </div>
-                    <div class="cert-info">
-                        <h3>Coding Track - Capstone 1</h3>
-                        <p>iSchool Programming Credential</p>
-                    </div>
-                </div>
-
-                <!-- 4. iSchool Coding Certificate 2 (PNG) -->
-                <div class="certificate-card reveal">
-                    <div class="cert-img-container">
-                        <img src="certificate3.png" alt="iSchool Coding Certificate" class="cert-thumb">
-                        <div class="cert-overlay"><i class="fa-solid fa-expand"></i></div>
-                    </div>
-                    <div class="cert-info">
-                        <h3>Coding Track - Capstone 2</h3>
-                        <p>iSchool Programming Credential</p>
+                    <div class="cert-info" style="padding: 20px;">
+                        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Event Supervision & Organization</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">Professional Leadership Credential</p>
                     </div>
                 </div>
 
-                <!-- 5. iSchool Coding Certificate 3 (PNG) -->
-                <div class="certificate-card reveal">
-                    <div class="cert-img-container">
-                        <img src="certificate4.png" alt="iSchool Coding Certificate" class="cert-thumb">
-                        <div class="cert-overlay"><i class="fa-solid fa-expand"></i></div>
+                <!-- 3. iSchool Coding Certificate 1 -->
+                <div class="certificate-card reveal" style="background: var(--bg-body); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.3s;">
+                    <div class="cert-img-container" style="position: relative; overflow: hidden; height: 180px;">
+                        <img src="certificate2.png" alt="iSchool Coding Certificate" class="cert-thumb" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+                        <div class="cert-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;"><i class="fa-solid fa-expand" style="color: #fff; font-size: 1.5rem;"></i></div>
                     </div>
-                    <div class="cert-info">
-                        <h3>Coding Track - Capstone 3</h3>
-                        <p>iSchool Programming Credential</p>
-                    </div>
-                </div>
-
-                <!-- 6. iSchool Coding Certificate 4 (PNG) -->
-                <div class="certificate-card reveal">
-                    <div class="cert-img-container">
-                        <img src="certificate5.png" alt="iSchool Coding Certificate" class="cert-thumb">
-                        <div class="cert-overlay"><i class="fa-solid fa-expand"></i></div>
-                    </div>
-                    <div class="cert-info">
-                        <h3>Coding Track - Capstone 4</h3>
-                        <p>iSchool Programming Credential</p>
+                    <div class="cert-info" style="padding: 20px;">
+                        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Coding Track - Capstone 1</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">iSchool Programming Credential</p>
                     </div>
                 </div>
 
-                <!-- 7. iSchool Coding Certificate 5 (PNG) -->
-                <div class="certificate-card reveal">
-                    <div class="cert-img-container">
-                        <img src="certificate6.png" alt="iSchool Coding Certificate" class="cert-thumb">
-                        <div class="cert-overlay"><i class="fa-solid fa-expand"></i></div>
+                <!-- 4. iSchool Coding Certificate 2 -->
+                <div class="certificate-card reveal" style="background: var(--bg-body); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.3s;">
+                    <div class="cert-img-container" style="position: relative; overflow: hidden; height: 180px;">
+                        <img src="certificate3.png" alt="iSchool Coding Certificate" class="cert-thumb" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+                        <div class="cert-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;"><i class="fa-solid fa-expand" style="color: #fff; font-size: 1.5rem;"></i></div>
                     </div>
-                    <div class="cert-info">
-                        <h3>Coding Track - Capstone 5</h3>
-                        <p>iSchool Programming Credential</p>
+                    <div class="cert-info" style="padding: 20px;">
+                        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Coding Track - Capstone 2</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">iSchool Programming Credential</p>
                     </div>
                 </div>
 
-                <!-- 8. iSchool Coding Certificate 6 (PNG) -->
-                <div class="certificate-card reveal">
-                    <div class="cert-img-container">
-                        <img src="certificate7.png" alt="iSchool Coding Certificate" class="cert-thumb">
-                        <div class="cert-overlay"><i class="fa-solid fa-expand"></i></div>
+                <!-- 5. iSchool Coding Certificate 3 -->
+                <div class="certificate-card reveal" style="background: var(--bg-body); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.3s;">
+                    <div class="cert-img-container" style="position: relative; overflow: hidden; height: 180px;">
+                        <img src="certificate4.png" alt="iSchool Coding Certificate" class="cert-thumb" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+                        <div class="cert-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;"><i class="fa-solid fa-expand" style="color: #fff; font-size: 1.5rem;"></i></div>
                     </div>
-                    <div class="cert-info">
-                        <h3>Coding Track - Capstone 6</h3>
-                        <p>iSchool Programming Credential</p>
+                    <div class="cert-info" style="padding: 20px;">
+                        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Coding Track - Capstone 3</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">iSchool Programming Credential</p>
+                    </div>
+                </div>
+
+                <!-- 6. iSchool Coding Certificate 4 -->
+                <div class="certificate-card reveal" style="background: var(--bg-body); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.3s;">
+                    <div class="cert-img-container" style="position: relative; overflow: hidden; height: 180px;">
+                        <img src="certificate5.png" alt="iSchool Coding Certificate" class="cert-thumb" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+                        <div class="cert-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;"><i class="fa-solid fa-expand" style="color: #fff; font-size: 1.5rem;"></i></div>
+                    </div>
+                    <div class="cert-info" style="padding: 20px;">
+                        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Coding Track - Capstone 4</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">iSchool Programming Credential</p>
+                    </div>
+                </div>
+
+                <!-- 7. iSchool Coding Certificate 5 -->
+                <div class="certificate-card reveal" style="background: var(--bg-body); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.3s;">
+                    <div class="cert-img-container" style="position: relative; overflow: hidden; height: 180px;">
+                        <img src="certificate6.png" alt="iSchool Coding Certificate" class="cert-thumb" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+                        <div class="cert-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;"><i class="fa-solid fa-expand" style="color: #fff; font-size: 1.5rem;"></i></div>
+                    </div>
+                    <div class="cert-info" style="padding: 20px;">
+                        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Coding Track - Capstone 5</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">iSchool Programming Credential</p>
+                    </div>
+                </div>
+
+                <!-- 8. iSchool Coding Certificate 6 -->
+                <div class="certificate-card reveal" style="background: var(--bg-body); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.3s;">
+                    <div class="cert-img-container" style="position: relative; overflow: hidden; height: 180px;">
+                        <img src="certificate7.png" alt="iSchool Coding Certificate" class="cert-thumb" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+                        <div class="cert-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;"><i class="fa-solid fa-expand" style="color: #fff; font-size: 1.5rem;"></i></div>
+                    </div>
+                    <div class="cert-info" style="padding: 20px;">
+                        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Coding Track - Capstone 6</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">iSchool Programming Credential</p>
                     </div>
                 </div>
 
             </div>
+
         </div>
     </section>
+
 
     <!-- ==========================================================================
         CONTACT SECTION
         ========================================================================== -->
-    <section id="contact" class="contact-section section-padding">
-        <div class="section-container">
-            <h2 class="section-title reveal">Let's Connect<span>.</span></h2>
-            <p class="contact-lead reveal">If you are looking for a dedicated software developer, technical contributor, or project leader, let's connect.</p>
+    <section id="contact" class="contact-section section-padding" style="padding: 100px 30px;">
+        <div class="section-container" style="max-width: 1200px; margin: 0 auto;">
+
+            <h2 class="section-title reveal" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; text-align: center;">Let's Connect<span style="color: var(--accent-gold);">.</span></h2>
+            <p class="contact-lead reveal" style="text-align: center; color: var(--text-secondary); max-width: 600px; margin: 0 auto 40px auto; font-size: 1rem;">If you are looking for a dedicated software developer, technical hardware contributor, or project leader, send me a message below or reach out directly.</p>
             
-            <div class="contact-grid">
-                <!-- Email Card -->
-                <a href="mailto:youssefelomda12@gmail.com" class="contact-card reveal">
-                    <div class="contact-icon-box">
-                        <i class="fa-solid fa-envelope"></i>
+            <div class="contact-form-wrapper reveal" style="max-width: 700px; margin: 0 auto 40px auto; background: var(--bg-card); padding: 40px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                
+                <form id="contact-form" action="https://formspree.io/f/youssefelomda12@gmail.com" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
+                    
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        
+                        <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 8px;">
+                            <label for="name" style="color: var(--text-primary); font-size: 0.9rem; font-weight: 500;">Your Name</label>
+                            <input type="text" id="name" name="name" required placeholder="John Doe" style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 12px 15px; border-radius: 6px; color: var(--text-primary); font-family: 'Poppins', sans-serif; outline: none;">
+                        </div>
+
+                        <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 8px;">
+                            <label for="email" style="color: var(--text-primary); font-size: 0.9rem; font-weight: 500;">Your Email</label>
+                            <input type="email" id="email" name="email" required placeholder="john@example.com" style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 12px 15px; border-radius: 6px; color: var(--text-primary); font-family: 'Poppins', sans-serif; outline: none;">
+                        </div>
+
                     </div>
-                    <h3>Email</h3>
-                    <p>youssefelomda12@gmail.com</p>
-                </a>
-                <!-- Phone Card -->
-                <a href="tel:+201080572745" class="contact-card reveal">
-                    <div class="contact-icon-box">
-                        <i class="fa-solid fa-phone"></i>
+
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <label for="message" style="color: var(--text-primary); font-size: 0.9rem; font-weight: 500;">Your Message</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Hello Youssef, I'd like to talk about a project..." style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 12px 15px; border-radius: 6px; color: var(--text-primary); font-family: 'Poppins', sans-serif; outline: none; resize: vertical;"></textarea>
                     </div>
-                    <h3>Phone</h3>
-                    <p>+20 108 057 2745</p>
-                </a>
-                <!-- Instagram Card -->
-                <a href="https://instagram.com/CapturedByoussef" target="_blank" class="contact-card reveal">
-                    <div class="contact-icon-box">
-                        <i class="fa-brands fa-instagram"></i>
+
+                    <button type="submit" id="submit-btn" class="btn btn-primary" style="background: var(--accent-gold); color: #000; padding: 12px 28px; border-radius: 6px; font-weight: 600; align-self: flex-start; cursor: pointer; border: none; box-shadow: 0 4px 15px var(--glow-shadow);">Send Message</button>
+                    
+                    <div id="form-success-msg" style="display: none; color: #22c55e; font-size: 0.9rem; font-weight: 500; margin-top: 5px;">
+                        <i class="fa-solid fa-circle-check"></i> Thank you! Your message has been sent successfully.
                     </div>
-                    <h3>Instagram</h3>
-                    <p>@CapturedByoussef</p>
-                </a>
+
+                </form>
+
             </div>
+
+            <div class="contact-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto;">
+
+                <!-- Interactive Copy Email Card -->
+                <div id="copy-email-card" class="contact-card reveal" style="background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; position: relative; transition: transform 0.3s;">
+                    <div class="contact-icon-box" style="width: 50px; height: 50px; background: rgba(245, 158, 11, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto;">
+                        <i class="fa-solid fa-envelope" id="email-icon" style="color: var(--accent-gold); font-size: 1.2rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Email</h3>
+                    <p id="email-text" style="color: var(--text-secondary); font-size: 0.9rem;">youssefelomda12@gmail.com</p>
+                    <span id="copy-tooltip" style="position: absolute; top: 10px; right: 10px; background: #22c55e; color: #fff; font-size: 0.7rem; padding: 3px 8px; border-radius: 4px; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;">Copied!</span>
+                </div>
+
+                <!-- Phone Contact Card -->
+                <a href="tel:+201080572745" class="contact-card reveal" style="background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; text-decoration: none; display: block; transition: transform 0.3s;">
+                    <div class="contact-icon-box" style="width: 50px; height: 50px; background: rgba(245, 158, 11, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto;">
+                        <i class="fa-solid fa-phone" style="color: var(--accent-gold); font-size: 1.2rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Phone</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">+20 108 057 2745</p>
+                </a>
+
+                <!-- Instagram Contact Card -->
+                <a href="https://instagram.com/CapturedByoussef" target="_blank" class="contact-card reveal" style="background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; text-decoration: none; display: block; transition: transform 0.3s;">
+                    <div class="contact-icon-box" style="width: 50px; height: 50px; background: rgba(245, 158, 11, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto;">
+                        <i class="fa-brands fa-instagram" style="color: var(--accent-gold); font-size: 1.2rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Instagram</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">@CapturedByoussef</p>
+                </a>
+
+            </div>
+
         </div>
     </section>
+
 
     <!-- ==========================================================================
         LIGHTBOX VIEWER COMPONENT
         ========================================================================== -->
-    <div id="lightbox" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <img class="lightbox-content" id="lightbox-img" src="" alt="Enlarged Certificate View">
-        <div id="lightbox-caption" class="lightbox-caption"></div>
+    <div id="lightbox" class="lightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; flex-direction: column;">
+        <span class="lightbox-close" style="position: absolute; top: 25px; right: 35px; color: #fff; font-size: 40px; font-weight: 300; cursor: pointer;">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" src="" alt="Enlarged Certificate View" style="max-width: 85%; max-height: 80%; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+        <div id="lightbox-caption" class="lightbox-caption" style="color: #fff; margin-top: 15px; font-size: 1.1rem; font-weight: 500;"></div>
     </div>
+
 
     <!-- ==========================================================================
         FOOTER SECTION
         ========================================================================== -->
-    <footer class="footer">
-        <div class="footer-container">
-            <p>&copy; <span id="year"></span> All Rights Reserved.</p>
-            <p class="footer-credit">Designed & Engineered by <span>Youssef Ahmed</span></p>
+    <footer class="footer" style="background: var(--bg-card); border-top: 1px solid var(--border-color); padding: 40px 30px; text-align: center;">
+        <div class="footer-container" style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; align-items: center;">
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">&copy; <span id="year">2026</span> All Rights Reserved.</p>
+            <p class="footer-credit" style="color: var(--text-primary); font-size: 0.95rem; font-weight: 500;">Designed & Engineered by <span style="color: var(--accent-gold);">Youssef Ahmed</span></p>
         </div>
     </footer>
 
-    <!-- Slider Script Logic & Mobile Touch Handling -->
+
+    <!-- ==========================================================================
+        INLINE EXTRA SCRIPT LOGIC (THEME TOGGLE & ANIMATION HANDLERS)
+        ========================================================================== -->
     <script>
-        const sliderCtrl = document.getElementById('slider-ctrl');
-        const beforeContainer = document.getElementById('before-container');
-        const beforeInner = document.getElementById('before-inner');
-        const wrapper = document.querySelector('.slider-wrapper');
+        // Theme Switcher Implementation
+        const themeBtn = document.getElementById('theme-switcher');
+        const themeIcon = document.getElementById('theme-icon');
+        const htmlDoc = document.documentElement;
 
-        if (sliderCtrl && beforeContainer && beforeInner && wrapper) {
-            const syncWidth = () => {
-                beforeInner.style.width = wrapper.offsetWidth + 'px';
-            };
-            window.addEventListener('resize', syncWidth);
-            syncWidth();
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = htmlDoc.getAttribute('data-theme');
+            if(currentTheme === 'dark') {
+                htmlDoc.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fa-solid fa-moon';
+                showToast('Switched to Light Mode');
+            } else {
+                htmlDoc.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+                showToast('Switched to Dark Mode');
+            }
+        });
 
-            const updateSlider = (val) => {
-                beforeContainer.style.width = val + '%';
-                sliderCtrl.value = val;
-            };
-
-            sliderCtrl.addEventListener('input', (e) => {
-                updateSlider(e.target.value);
-            });
-
-            let isDragging = false;
-
-            sliderCtrl.addEventListener('touchstart', () => { isDragging = true; }, {passive: true});
-            window.addEventListener('touchend', () => { isDragging = false; });
-
-            sliderCtrl.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-                const rect = sliderCtrl.getBoundingClientRect();
-                const touchX = e.touches[0].clientX;
-                let posX = touchX - rect.left;
-                let percentage = (posX / rect.width) * 100;
-                if (percentage < 0) percentage = 0;
-                if (percentage > 100) percentage = 100;
-                updateSlider(percentage);
-            }, {passive: true});
+        // Toast Notification Trigger
+        function showToast(message) {
+            const toast = document.getElementById('live-toast');
+            const toastText = document.getElementById('toast-text');
+            toastText.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
+
+        // Animate Skill Bars on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.skill-level-fill').forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-width');
+                });
+            }, 500);
+
+            // Greet user with toast after load
+            setTimeout(() => {
+                showToast("Welcome to Youssef's interactive portfolio hub!");
+            }, 1000);
+        });
     </script>
 
-    <!-- Main JavaScript Logic Link -->
+    <!-- Main Application JavaScript Link -->
     <script src="script.js"></script>
+
 </body>
 </html>
